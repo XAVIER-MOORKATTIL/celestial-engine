@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
+// Define the live Render production backend URL
+const BACKEND_URL = 'https://celestial-backend-4z44.onrender.com';
+
 export default function App() {
     const [status, setStatus] = useState("Awaiting Handshake...");
     const [telemetry, setTelemetry] = useState(null);
 
     useEffect(() => {
-        const socket = io('http://localhost:5000');
+        // Connect WebSockets directly to Render
+        const socket = io(BACKEND_URL);
 
         socket.on('telemetry', (data) => {
             setTelemetry(data);
@@ -18,7 +22,8 @@ export default function App() {
     const verifyAlignment = async () => {
         setStatus("Verifying Spatial Center...");
         try {
-            const res = await fetch('http://localhost:5000/api/v1/orbit/verify', {
+            // Fetch API endpoint from Render
+            const res = await fetch(`${BACKEND_URL}/api/v1/orbit/verify`, {
                 headers: {
                     'x-engineer-role': 'CHOSEN_MEMBER',
                     'x-secret-key': 'ORBIT_SECRET_XAVIER_999'
@@ -31,7 +36,7 @@ export default function App() {
                 setStatus(`FAILED: ${data.detail}`);
             }
         } catch (e) {
-            setStatus("Network Failure: Event Loop Starved.");
+            setStatus("Network Failure: Event Loop Starved or Cold Start in Progress.");
         }
     };
 
