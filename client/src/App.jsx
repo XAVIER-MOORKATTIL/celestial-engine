@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
 // Define the live Render production backend URL
-const BACKEND_URL = 'https://celestial-backend-4z44.onrender.com';
+const BACKEND_URL = 'https://celestial-backend-college.onrender.com';
 
 export default function App() {
     const [status, setStatus] = useState("Awaiting Handshake...");
